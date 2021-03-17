@@ -15,6 +15,7 @@
             integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T"
             crossorigin="anonymous"
     />
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/main.css' ) }}">
 
     {% if title %}
         <title>Flask - {{ title }}</title>
@@ -47,7 +48,7 @@
                     </li>
                     <li class="nav-item">
                         <a class="nav-link" href="{{ url_for('logout') }}">Logout</a>
-                {% else %}
+                        {% else %}
                     <li class="nav-item">
                         <a class="nav-link" href="{{ url_for('login') }}">Login</a>
                     </li>
