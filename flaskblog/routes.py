@@ -55,6 +55,10 @@ def login():
 
 
 def save_picture(form_picture):
+    # remove old profile picture
+    old_fn = os.path.join(app.root_path, 'static', 'profile_pics', current_user.image_file)
+    if os.path.exists(old_fn):
+        os.remove(old_fn)
     r_hex = secrets.token_hex(8)
     p_extension = os.path.splitext(form_picture.filename)[1]
     new_filename = r_hex + p_extension
