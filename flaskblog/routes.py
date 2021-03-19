@@ -10,8 +10,9 @@ from flask_login import login_user, login_required, logout_user, current_user
 
 @app.route("/")
 def index():
-    posts = Post.query.all()
-    posts.reverse()
+    page = int(request.args.get('page', 1))
+    posts = Post.query.order_by(Post.date_posted.desc()).paginate(per_page=2, page=page)
+
     return render_template('home.html', title='Posts', posts=posts)
 
 
@@ -57,9 +58,10 @@ def login():
 
 
 def save_picture(form_picture):
-    # remove old profile picture
+    # remove old profile picture if not default
     old_fn = os.path.join(app.root_path, 'static', 'profile_pics', current_user.image_file)
-    if os.path.exists(old_fn):
+
+    if current_user.image_file != 'default.png' and os.path.exists(old_fn):
         os.remove(old_fn)
     r_hex = secrets.token_hex(8)
     p_extension = os.path.splitext(form_picture.filename)[1]
@@ -113,7 +115,7 @@ def new_post():
         db.session.commit()
         flash('Your post has been published!', 'success')
         return redirect(url_for('index'))
-    return render_template('create_post.html',legend='Create Post', title='New Post', form=form)
+    return render_template('create_post.html', legend='Create Post', title='New Post', form=form)
 
 
 @app.route('/post/<int:post_id>')
@@ -152,3 +154,4 @@ def delete_post(post_id):
     db.session.commit()
     flash('Your post has been deleted!', 'success')
     return redirect(url_for('index'))
+
