@@ -21,7 +21,8 @@ class User(db.Model, UserMixin):
         s = Serializer(secret_key=app.secret_key, expires_in=expired_seconds)
         return s.dumps({'user_id': self.id}).decode('utf-8')
 
-    def verify_reset_token(self, token):
+    @staticmethod
+    def verify_reset_token(token):
         s = Serializer(app.secret_key)
         try:
             user_id = s.loads(token).get('user_id', None)
@@ -29,8 +30,6 @@ class User(db.Model, UserMixin):
             return None
 
         user = User.query.get(user_id)
-        print(user)
-        print(self)
         return user
 
 

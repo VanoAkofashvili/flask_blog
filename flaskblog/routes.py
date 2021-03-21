@@ -192,7 +192,7 @@ def request_token():
     return render_template('request_token.html', title='Reset Password', form=form)
 
 
-@app.route('/reset_password/<token>')
+@app.route('/reset_password/<token>', methods=['GET', 'POST'])
 def reset_token(token):
     # if logged user wants to access this page, redirect back to home
     if current_user.is_authenticated:
@@ -201,7 +201,7 @@ def reset_token(token):
     user = User.verify_reset_token(token)
     if user is None:
         flash('That is invalid or expired token', 'warning')
-        return redirect(url_for('reset_request'))
+        return redirect(url_for('request_token'))
 
     form = ResetPasswordForm()
     if form.validate_on_submit():
