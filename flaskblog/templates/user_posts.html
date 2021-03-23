@@ -10,7 +10,7 @@
                     <a class="mr-2" href="#">{{ post.author.username }}</a>
                     <small class="text-muted">{{ post.date_posted.strftime('%Y-%m-%d') }}</small>
                 </div>
-                <h2><a href="{{ url_for('post', post_id=post.id) }}" class="article-title">{{ post.title }}</a></h2>
+                <h2><a href="{{ url_for('posts.post', post_id=post.id) }}" class="article-title">{{ post.title }}</a></h2>
                 <p class="article-content">{{ post.content }}</p>
             </div>
         </article>
@@ -20,19 +20,19 @@
     <nav aria-label="Page navigation example">
         <ul class="pagination justify-content-center">
             <li class="page-item {% if not posts.has_prev %} disabled {% endif %}">
-                <a class="page-link" href="{{ url_for('user_posts', username=user.username, page=posts.prev_num) }}" tabindex="-1">Previous</a>
+                <a class="page-link" href="{{ url_for('users.user_posts', username=user.username, page=posts.prev_num) }}" tabindex="-1">Previous</a>
             </li>
             {% for page in posts.iter_pages(left_edge=1, right_edge=1, left_current=1, right_current=2) %}
                 {% if not page %}
                     <li class="page-item disabled"><a class="page-link" href="#">...</a>
                         {% else %}
                     <li class="page-item {% if page==posts.page %}active{% endif %}"><a class="page-link"
-                                                                                          href="{{ url_for('user_posts', username=user.username, page=page) }}">{{ page }}</a>
+                                                                                          href="{{ url_for('users.user_posts', username=user.username, page=page) }}">{{ page }}</a>
                     </li>
                 {% endif %}
             {% endfor %}
             <li class="page-item {% if not posts.has_next %} disabled {% endif %}">
-                <a class="page-link" href="{{ url_for('user_posts', username=user.username, page=posts.next_num) }}">Next</a>
+                <a class="page-link" href="{{ url_for('users.user_posts', username=user.username, page=posts.next_num) }}">Next</a>
             </li>
         </ul>
     </nav>
