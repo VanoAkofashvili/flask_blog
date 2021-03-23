@@ -1,4 +1,4 @@
 site.db
 .idea/
-static/profile_pics/*
 !static/profile_pics/default.png
+static/profile_pics/*
