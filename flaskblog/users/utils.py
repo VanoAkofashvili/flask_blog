@@ -2,12 +2,16 @@ import os
 import secrets
 
 from PIL import Image
+from flask import url_for, current_app
 from flask_login import current_user
+from flask_mail import Message
+
+from flaskblog import mail
 
 
 def save_picture(form_picture):
     # remove old profile picture if not default
-    old_fn = os.path.join(app.root_path, 'static', 'profile_pics', current_user.image_file)
+    old_fn = os.path.join(current_app.root_path, 'static', 'profile_pics', current_user.image_file)
 
     if current_user.image_file != 'default.png' and os.path.exists(old_fn):
         os.remove(old_fn)
@@ -18,7 +22,7 @@ def save_picture(form_picture):
 
     i.thumbnail((125, 125))
 
-    path = os.path.join(app.root_path, 'static', 'profile_pics', new_filename)
+    path = os.path.join(current_app.root_path, 'static', 'profile_pics', new_filename)
 
     i.save(path)
     return new_filename
@@ -30,7 +34,7 @@ def send_reset_email(user):
                   sender='noreply@demo.com',
                   recipients=[user.email])
     msg.body = f"""To reset your password, visit the following link:
-    {url_for('reset_token', token=token, _external=True)}
+    {url_for('users.reset_token', token=token, _external=True)}
 
     If you did not make this request then simply ignore this email and no changes will be made
         """
